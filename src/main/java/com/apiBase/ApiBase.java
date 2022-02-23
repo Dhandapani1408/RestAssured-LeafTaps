@@ -31,6 +31,7 @@ public class ApiBase extends PreAndPost{
 	public static Response get(String URL) {
 		Response response = setLogs().when().get(URL);
 		reportRequest("<pre>"+response.prettyPrint()+"</pre>", "");
+		response.then().log().all();
 		return response;
 	}
 
@@ -39,111 +40,137 @@ public class ApiBase extends PreAndPost{
 		Response response = setLogs()
 		.get();
 		reportRequest("<pre>"+response.prettyPrint()+"</pre>", "");
+		response.then().log().all();
 		return response;
 	}
 
 	public static Response getWithHeader(Map<String, String> headers, String URL) {
-
-		return setLogs()
-				.when()
-				.headers(headers)
-				.get(URL);
+		Response response = setLogs()
+		.when()
+		.headers(headers)
+		.get(URL);
+		reportRequest("<pre>"+response.prettyPrint()+"</pre>", "");
+		response.then().log().all();
+		return response;
 	}
 
 	public static Response post() {
-
-		return setLogs()
-				.post();
+		Response post = setLogs()
+		.post();
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 
 	public static Response post(String URL) {
-		setLogs()
-		.post(URL)
-		.then()
-		.log().all();
-		
-		return setLogs()
-				.post(URL);
+		Response post = setLogs()
+		.post(URL);
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 
 	public static Response postWithBodyAsFile(File bodyFile) {
-
-		return setLogs()
-				.body(bodyFile)
-				.post();
+		Response post = setLogs()
+		.body(bodyFile)
+		.post();
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 	
 	public static Response postWithBodyAsFileAndUrl(File bodyFile, String URL) {
-		return setLogs()
-				.body(bodyFile)
-				.post(URL);
+		Response post = setLogs()
+		.body(bodyFile)
+		.post(URL);
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 	
 	public static Response postWithHeaderAndForm(Map<String, String> headers,
 			JSONObject jsonObject, String URL) {
-
-		return setLogs()
-				.headers(headers)
-				.body(jsonObject)
-				.post(URL);
+		Response post = setLogs()
+		.headers(headers)
+		.body(jsonObject)
+		.post(URL);
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 
 	public static Response postWithJsonAsBody(String jsonObject, String URL) {
-
-		return setLogs()
-				.body(jsonObject)
-				.post(URL);
+		Response post = setLogs()
+		.body(jsonObject)
+		.post(URL);
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 
 
 	public static Response postWithHeaderAndJsonBody(Map<String, String> headers,
 			String jsonObject, String URL) {
-
-		return setLogs()
-				.when()
-				.headers(headers)
-				.body(jsonObject)
-				.post(URL);
+		Response post = setLogs()
+		.when()
+		.headers(headers)
+		.body(jsonObject)
+		.post(URL);
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 
 
 	public static Response postWithHeaderParam(Map<String, String> headers, String URL) {
-
-		return setLogs()
-				.when()
-				.headers(headers)
-				.post(URL);
+		Response post = setLogs()
+		.when()
+		.headers(headers)
+		.post(URL);
+		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		post.then().log().all();
+		return post;
 	}
 	
 	public static Response delete(String URL) {
-		return setLogs()
-				.when()
-				.delete(URL);
+		Response delete = setLogs()
+		.when()
+		.delete(URL);
+		reportRequest("<pre>"+delete.prettyPrint()+"</pre>", "");
+		delete.then().log().all();
+		return delete;
 	}
 
 	public static Response deleteWithHeaderAndPathParam(Map<String, String> headers,
 			JSONObject jsonObject, String URL) {
-
-		return setLogs()
-				.when()
-				.headers(headers)
-				.body(jsonObject)
-				.delete(URL);
+		Response delete = setLogs()
+		.when()
+		.headers(headers)
+		.body(jsonObject)
+		.delete(URL);
+		reportRequest("<pre>"+delete.prettyPrint()+"</pre>", "");
+		delete.then().log().all();
+		return delete;
 	}
 
 	public static Response deleteWithHeaderAndPathParamWithoutRequestBody(
 			Map<String, String> headers, String URL) throws Exception {
-		return setLogs()
-				.when()
-				.headers(headers)
-				.delete(URL);
+		Response delete = setLogs()
+		.when()
+		.headers(headers)
+		.delete(URL);
+		reportRequest("<pre>"+delete.prettyPrint()+"</pre>", "");
+		delete.then().log().all();
+		return delete;
 	}
 
 	public static Response putWithHeaderAndBodyParam(Map<String, String> headers,
 			JSONObject jsonObject, String URL) {
-
-		return RestAssured.given().headers(headers).contentType(getContentType()).request()
-				.body(jsonObject).when().put(URL);
+		Response put = RestAssured.given().headers(headers).contentType(getContentType()).request()
+		.body(jsonObject).when().put(URL);
+		reportRequest("<pre>"+put.prettyPrint()+"</pre>", "");
+		put.then().log().all();
+		return put;
 	}
 	
 	public static ValidatableResponse enableResponseLog(Response response) {
