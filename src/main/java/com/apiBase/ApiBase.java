@@ -1,12 +1,17 @@
 package com.apiBase;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.groovy.json.internal.Exceptions;
+
 import com.apiAnnotations.PreAndPost;
 import com.github.wnameless.json.flattener.JsonFlattener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -15,6 +20,7 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 
 public class ApiBase extends PreAndPost{
 
@@ -167,6 +173,14 @@ public class ApiBase extends PreAndPost{
 	public static Response putWithHeaderAndBodyParam(Map<String, String> headers,
 			JSONObject jsonObject, String URL) {
 		Response put = RestAssured.given().headers(headers).contentType(getContentType()).request()
+		.body(jsonObject).when().put(URL);
+		reportRequest("<pre>"+put.prettyPrint()+"</pre>", "");
+		put.then().log().all();
+		return put;
+	}
+	
+	public static Response putWithBodyParam(JSONObject jsonObject, String URL) {
+		Response put = RestAssured.given().contentType(getContentType()).request()
 		.body(jsonObject).when().put(URL);
 		reportRequest("<pre>"+put.prettyPrint()+"</pre>", "");
 		put.then().log().all();
@@ -375,4 +389,30 @@ public class ApiBase extends PreAndPost{
         Object wsIGetParameterValue = getParameterValue(response,wsIGetJsonPathOfParameter);
         return wsIGetParameterValue;
     }
+    
+    /**
+     * This method takes in a string and converts to json format
+     *
+     * @param stringToJson the string to be formatted to json
+     * @return a string
+     * @throws net.minidev.json.parser.ParseException 
+     * @throws Exceptions 
+     * @throws  
+     */
+
+    public JSONObject convertStringToJsonFormat(String stringToJson) throws net.minidev.json.parser.ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject json = null;
+        json = (JSONObject) parser.parse(stringToJson);
+      //  Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return json;
+    }
+    
+	/*
+	 * public String wsIConvertStringToJsonFormat(File fileToJson) throws
+	 * net.minidev.json.parser.ParseException { JSONParser parser = new
+	 * JSONParser(); JSONObject json = null; json = (JSONObject)
+	 * parser.parse(stringToJson); Gson gson = new
+	 * GsonBuilder().setPrettyPrinting().create(); return gson.toJson(json); }
+	 */
 }
