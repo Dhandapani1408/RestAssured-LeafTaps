@@ -41,7 +41,7 @@ public class TC004_Update  extends ApiBase{
 		
 		String stringRequestBody = Files.readString(Paths.get("./data/TC004.json"));
 		JSONObject putRequestBody = convertStringToJsonFormat(stringRequestBody);
-		Response putResponse = putWithBodyParam(putRequestBody, "/users"+id);
+		Response putResponse = putWithBodyParam(putRequestBody, "/users/"+id);
 		// Verify the Content type
 		verifyContentType(putResponse, "JSON");
 		

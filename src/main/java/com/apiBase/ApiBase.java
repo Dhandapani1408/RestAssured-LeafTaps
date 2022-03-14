@@ -172,7 +172,7 @@ public class ApiBase extends PreAndPost{
 
 	public static Response putWithHeaderAndBodyParam(Map<String, String> headers,
 			JSONObject jsonObject, String URL) {
-		Response put = RestAssured.given().headers(headers).contentType(getContentType()).request()
+		Response put = setLogs().when().headers(headers).contentType(getContentType()).request()
 		.body(jsonObject).when().put(URL);
 		reportRequest("<pre>"+put.prettyPrint()+"</pre>", "");
 		put.then().log().all();
@@ -180,7 +180,7 @@ public class ApiBase extends PreAndPost{
 	}
 	
 	public static Response putWithBodyParam(JSONObject jsonObject, String URL) {
-		Response put = RestAssured.given().contentType(getContentType()).request()
+		Response put = setLogs().when().contentType(getContentType()).request()
 		.body(jsonObject).when().put(URL);
 		reportRequest("<pre>"+put.prettyPrint()+"</pre>", "");
 		put.then().log().all();
