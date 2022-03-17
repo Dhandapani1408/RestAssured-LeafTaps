@@ -35,9 +35,9 @@ public class TC004_Update  extends ApiBase{
 		Response postResponse = postWithBodyAsFileAndUrl(new File("./data/TC001.json"),"/users");
 		//Verify the Content by Specific Key
 		//verifyContentWithKey(response, "result.short_description", "This is Rest Assured Automation framework - Makaia");
-		Object id = postResponse.jsonPath().get("id");
-		System.out.println("id ="+id);
+		//Object id = postResponse.jsonPath().get("id");
 		
+		Object id = getParameterValueUsingParameterName(postResponse, "id", 0);
 		
 		String stringRequestBody = Files.readString(Paths.get("./data/TC004.json"));
 		JSONObject putRequestBody = convertStringToJsonFormat(stringRequestBody);
