@@ -1,11 +1,14 @@
 package com.apiBase;
 
 import java.io.File;
+import java.io.PrintStream;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.output.WriterOutputStream;
 import org.apache.groovy.json.internal.Exceptions;
 
 import com.apiAnnotations.PreAndPost;
@@ -14,6 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.restassured.RestAssured;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -24,19 +29,24 @@ import net.minidev.json.parser.JSONParser;
 
 public class ApiBase extends PreAndPost{
 
-
-
+	static StringWriter requestWriter = new StringWriter();
+	static PrintStream  requestCapture = new PrintStream(new WriterOutputStream(requestWriter, "US-ASCII"), true);
+	
+	static StringWriter responseWriter = new StringWriter();
+	static PrintStream responseCapture = new PrintStream(new WriterOutputStream(responseWriter, "US-ASCII"), true);
+	
 	public static RequestSpecification setLogs() {
 		return RestAssured
-				.given()
-				.log()
-				.all()
+				.given().log().all()
+				.filter(new RequestLoggingFilter(requestCapture))
+				.filter(new ResponseLoggingFilter(responseCapture))
 				.contentType(getContentType());
 	}
 
 	public static Response get(String URL) {
-		Response response = setLogs().when().get(URL);
-		reportRequest("<pre>"+response.prettyPrint()+"</pre>", "");
+		Response response = setLogs().when()
+				.get(URL);
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		response.then().log().all();
 		return response;
 	}
@@ -45,7 +55,7 @@ public class ApiBase extends PreAndPost{
 	public static Response get() {
 		Response response = setLogs()
 		.get();
-		reportRequest("<pre>"+response.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		response.then().log().all();
 		return response;
 	}
@@ -55,7 +65,7 @@ public class ApiBase extends PreAndPost{
 		.when()
 		.headers(headers)
 		.get(URL);
-		reportRequest("<pre>"+response.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		response.then().log().all();
 		return response;
 	}
@@ -63,7 +73,7 @@ public class ApiBase extends PreAndPost{
 	public static Response post() {
 		Response post = setLogs()
 		.post();
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -71,7 +81,7 @@ public class ApiBase extends PreAndPost{
 	public static Response post(String URL) {
 		Response post = setLogs()
 		.post(URL);
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -80,7 +90,7 @@ public class ApiBase extends PreAndPost{
 		Response post = setLogs()
 		.body(bodyFile)
 		.post();
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -89,7 +99,7 @@ public class ApiBase extends PreAndPost{
 		Response post = setLogs()
 		.body(bodyFile)
 		.post(URL);
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -100,7 +110,7 @@ public class ApiBase extends PreAndPost{
 		.headers(headers)
 		.body(jsonObject)
 		.post(URL);
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -109,7 +119,7 @@ public class ApiBase extends PreAndPost{
 		Response post = setLogs()
 		.body(jsonObject)
 		.post(URL);
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -122,7 +132,7 @@ public class ApiBase extends PreAndPost{
 		.headers(headers)
 		.body(jsonObject)
 		.post(URL);
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -133,7 +143,7 @@ public class ApiBase extends PreAndPost{
 		.when()
 		.headers(headers)
 		.post(URL);
-		reportRequest("<pre>"+post.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		post.then().log().all();
 		return post;
 	}
@@ -142,7 +152,7 @@ public class ApiBase extends PreAndPost{
 		Response delete = setLogs()
 		.when()
 		.delete(URL);
-		reportRequest("<pre>"+delete.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		delete.then().log().all();
 		return delete;
 	}
@@ -154,7 +164,7 @@ public class ApiBase extends PreAndPost{
 		.headers(headers)
 		.body(jsonObject)
 		.delete(URL);
-		reportRequest("<pre>"+delete.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		delete.then().log().all();
 		return delete;
 	}
@@ -165,7 +175,7 @@ public class ApiBase extends PreAndPost{
 		.when()
 		.headers(headers)
 		.delete(URL);
-		reportRequest("<pre>"+delete.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		delete.then().log().all();
 		return delete;
 	}
@@ -174,15 +184,19 @@ public class ApiBase extends PreAndPost{
 			JSONObject jsonObject, String URL) {
 		Response put = setLogs().when().headers(headers).contentType(getContentType()).request()
 		.body(jsonObject).when().put(URL);
-		reportRequest("<pre>"+put.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		put.then().log().all();
 		return put;
 	}
 	
 	public static Response putWithBodyParam(JSONObject jsonObject, String URL) {
+		requestCapture.flush();
+		responseCapture.flush();
+		requestWriter.flush();
+		requestWriter.flush();
 		Response put = setLogs().when().contentType(getContentType()).request()
 		.body(jsonObject).when().put(URL);
-		reportRequest("<pre>"+put.prettyPrint()+"</pre>", "");
+		reportRequest("<pre>"+requestWriter.toString()+"</pre> <br>  <pre>"+responseWriter.toString()+"</pre> <br>", "");
 		put.then().log().all();
 		return put;
 	}
