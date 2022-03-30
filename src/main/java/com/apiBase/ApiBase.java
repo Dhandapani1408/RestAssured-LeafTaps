@@ -36,6 +36,12 @@ public class ApiBase extends PreAndPost{
 	static PrintStream responseCapture = new PrintStream(new WriterOutputStream(responseWriter, "US-ASCII"), true);
 	
 	public static RequestSpecification setLogs() {
+		requestWriter = new StringWriter();
+		requestCapture = new PrintStream(new WriterOutputStream(requestWriter, "US-ASCII"), true);
+
+		responseWriter = new StringWriter();
+		responseCapture = new PrintStream(new WriterOutputStream(responseWriter, "US-ASCII"), true);
+		
 		return RestAssured
 				.given().log().all()
 				.filter(new RequestLoggingFilter(requestCapture))
