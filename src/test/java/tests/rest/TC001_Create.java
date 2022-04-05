@@ -42,6 +42,9 @@ public class TC001_Create extends ApiBase{
 		// Verify the response time
 		verifyResponseTime(response, 10000);
 		
+		// Verify the response schema
+		File schema = new File("./src/test/resources/PostSchema.json");	
+		verifyResponseSchema(response, schema);
 	}
 
 

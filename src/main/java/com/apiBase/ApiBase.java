@@ -20,6 +20,7 @@ import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -278,6 +279,15 @@ public class ApiBase extends PreAndPost{
 			return (String) jsonPath.get(key);			
 		}else {
 			return null;
+		}
+	}
+	
+	public static void verifyResponseSchema(Response response, File schemaJson) {
+		try {
+			response.then().body(JsonSchemaValidator.matchesJsonSchema(schemaJson));
+			reportRequest("The response schema matches the expected schema !!!", "PASS");	
+		}catch(Exception e) {
+			reportRequest("The response schema does not match the expected schema !!!", "FAIL");	
 		}
 	}
 	
