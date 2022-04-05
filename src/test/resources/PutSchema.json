@@ -8,17 +8,13 @@
     "job": {
       "type": "string"
     },
-    "id": {
-      "type": "string"
-    },
-    "createdAt": {
+    "updatedAt": {
       "type": "string"
     }
   },
   "required": [
     "name",
     "job",
-    "id",
-    "createdAt"
+    "updatedAt"
   ]
 }

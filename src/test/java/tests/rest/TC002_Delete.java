@@ -1,5 +1,7 @@
 package tests.rest;
 
+import java.io.File;
+
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -38,6 +40,9 @@ public class TC002_Delete extends ApiBase{
 		// Verify the response time
 		verifyResponseTime(response, 10000);
 		
+		// Verify the response schema
+		File schema = new File("./src/test/resources/GetSchema.json");	
+		verifyResponseSchema(response, schema);
 		// Get the Incidents
 	//	List<String> contents = getContentsWithKey(response, "data[1].id");
 		

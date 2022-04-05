@@ -51,6 +51,9 @@ public class TC004_Update  extends ApiBase{
 		// Verify the response time
 		verifyResponseTime(putResponse, 10000);
 		
+		// Verify the response schema
+		File schema = new File("./src/test/resources/PutSchema.json");
+		verifyResponseSchema(putResponse, schema);
 	}
 
 }
