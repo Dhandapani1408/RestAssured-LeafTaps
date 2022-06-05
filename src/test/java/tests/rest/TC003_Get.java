@@ -25,7 +25,7 @@ public class TC003_Get extends ApiBase{
 	}
 
 	@Test()
-	public void getIncidents() {		
+	public void getUser() {		
 		
 		// Get the request
 		Response response = get("/users");

@@ -25,7 +25,7 @@ public class TC001_Create extends ApiBase{
 	}
 
 	@Test(dataProvider = "fetchData")
-	public void createIncident(File file) {		
+	public void createUser(File file) {		
 		
 		// Post the request
 		Response response = postWithBodyAsFileAndUrl(file,"/users");

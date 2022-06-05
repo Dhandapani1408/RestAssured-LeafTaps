@@ -22,7 +22,7 @@ public class TC005_GetSingleUser extends ApiBase {
 	}
 
 	@Test()
-	public void getIncidents() {
+	public void getSingeUser() {
 
 		// Get the request
 		Response response = get("/users/1");

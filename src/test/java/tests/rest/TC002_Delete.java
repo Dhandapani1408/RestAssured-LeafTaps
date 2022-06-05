@@ -26,7 +26,7 @@ public class TC002_Delete extends ApiBase{
 	}
 
 	@Test()
-	public void deleteIncident() {		
+	public void deleteUser() {		
 		
 		// Post the request
 		Response response = get("/users");		
@@ -41,7 +41,7 @@ public class TC002_Delete extends ApiBase{
 		verifyResponseTime(response, 10000);
 		
 		// Verify the response schema
-		File schema = new File("./src/test/resources/GetSchema.json");	
+		File schema = new File("./src/test/resources/GetAllSchema.json");	
 		verifyResponseSchema(response, schema);
 		// Get the Incidents
 	//	List<String> contents = getContentsWithKey(response, "data[1].id");

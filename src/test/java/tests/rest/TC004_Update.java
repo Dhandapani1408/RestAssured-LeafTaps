@@ -29,7 +29,7 @@ public class TC004_Update  extends ApiBase{
 	}
 
 	@Test(dataProvider = "fetchData")
-	public void createIncident(File file) throws IOException, ParseException {		
+	public void updateUser(File file) throws IOException, ParseException {		
 		
 		// Post the request
 		Response postResponse = postWithBodyAsFileAndUrl(new File("./data/TC001.json"),"/users");
