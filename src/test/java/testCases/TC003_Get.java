@@ -1,4 +1,4 @@
-package tests.rest;
+package testCases;
 
 import java.io.File;
 
@@ -9,11 +9,14 @@ import com.apiBase.ApiBase;
 
 import io.restassured.response.Response;
 
-public class TC005_GetSingleUser extends ApiBase {
+
+
+public class TC003_Get extends ApiBase{
+
 	@BeforeTest
 	public void setValues() {
 		testCaseName = "Get Existing User (REST)";
-		testDescription = "Get single User and Print the first Name";
+		testDescription = "Get all User and Print the first Name";
 		nodes = "User";
 		authors = "Dhandapani";
 		category = "API";
@@ -22,28 +25,34 @@ public class TC005_GetSingleUser extends ApiBase {
 	}
 
 	@Test()
-	public void getSingeUser() {
-
+	public void getUser() {		
+		
 		// Get the request
-		Response response = get("/users/1");
-
+		Response response = get("/users");
+				
 		// Verify the Content type
 		verifyContentType(response, "JSON");
-
+		
 		// Verify the response status code
-		verifyResponseCode(response, 200);
-
+		verifyResponseCode(response, 200);	
+		
 		// Verify the response time
 		verifyResponseTime(response, 10000);
-
+		
 		// Print the first incident number
-		// String number = (String) response.jsonPath().getList("result.number").get(0);
-		String name = (String) getParameterValueUsingParameterName(response, "first_name", 0);
-		System.out.println("name is " + name);
-
+		//String number = (String) response.jsonPath().getList("result.number").get(0);
+		String name =(String) getParameterValueUsingParameterName(response, "first_name", 0);
+		System.out.println("name is "+name);
+		
 		// Verify the response schema
-		File schema = new File("./src/test/resources/GetSchema.json");
+		File schema = new File("./src/test/resources/GetAllSchema.json");
 		verifyResponseSchema(response, schema);
 	}
 
+
 }
+
+
+
+
+
